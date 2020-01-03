@@ -35,8 +35,7 @@ public void OnPluginStart()
 
 	RegConsoleCmd("gunStore", displayGunStore);
 	RegConsoleCmd("ammoStore", displayAmmoStore);
-
-	RegConsoleCmd("checkPoints", searchForPlayerPoints);
+	
 	RegConsoleCmd("setPoints", setClientPoints);
 	
 	
@@ -64,13 +63,6 @@ public void setPlayerPoints(int client)
 	playerScores[player] = 1000;
 }
 
-//Prints player's points to the in-game chat
-public void getPlayerPoints(int client)
-{
-	int x = GetClientUserId(client);
-	PrintToChat(client, "your points are: %i", playerScores[x]);
-}
-
 //Method for returning a player's points
 public int returnPlayerPoints(int client)
 {
@@ -88,7 +80,7 @@ public void addPointsToPlayer(int client, int addPoints)
 	playerScores[x] = newScore;
 }
 
-//method to subtract points from a player
+//Method to subtract points from a player
 public void subtractPointsFromPlayer(int client, int subPoints)
 {
 	//score = playerScores[1]
@@ -98,18 +90,13 @@ public void subtractPointsFromPlayer(int client, int subPoints)
 	playerScores[x] = newScore;
 }
 
+//Method to set all player points to 0
 public void resetAllPoints()
 {
 	for (int i = 0; i < MAXPLAYERS+1; i++)
 	{
 		playerScores[i] = 0;
 	}	
-}
-
-//Method executed when command /checkPoints is called, prints player points to in-game chat
-public Action searchForPlayerPoints(int client, int args)
-{
-	getPlayerPoints(client);
 }
 
 //Method executed when the command /setPoints is called, set's players points to 1000
@@ -130,10 +117,7 @@ public Action OnTakeDamage(int victim, int &attacker, int &inflictor, float &dam
 	//victim is a fake client(zombie), attacker is client
 	if(isZombieClass(victimClass) && attacker < MAXPLAYERS + 1)
 	{
-		//PrintToChatAll("Player attacked zombie");
 		addPointsToPlayer(attacker, 10);
-		getPlayerPoints(attacker);
-		
 	}
 	
 	return Plugin_Continue;
@@ -249,11 +233,8 @@ public void Event_mapReset(Event event, const char[] name, bool dontBroadcast)
 //Method to add 100 points when a zombie is killed
 public void Event_NpcKilled(Event event, const char[] name, bool dontBroadcast)
 {
-	//returns 1
 	int userID = event.GetInt("killeridx");
-	//add points(0, 100)
 	addPointsToPlayer(userID, 100);
-	getPlayerPoints(userID);
 }
 
 //Method to add 150 points when zombie head is split (both head split(50) and NPCkilled(100) events are called, = 150 points)
@@ -262,7 +243,6 @@ public void Event_zombieHeadSplit(Event event, const char[] name, bool dontBroad
 	//returns 1
 	int userID = event.GetInt("player_id");
 	addPointsToPlayer(userID, 50);
-	//getPlayerPoints(userID);
 }
 
 //Method for Mysterybox
@@ -393,7 +373,6 @@ public int gunStoreHandler(Menu gunMenu, MenuAction action, int param1, int para
 				{
 					subtractPointsFromPlayer(param1, 500);
 					GivePlayerItem(param1, "fa_1911");
-					getPlayerPoints(param1);
 				}
 			}
 			
@@ -407,7 +386,6 @@ public int gunStoreHandler(Menu gunMenu, MenuAction action, int param1, int para
 				{
 					subtractPointsFromPlayer(param1, 200);
 					GivePlayerItem(param1, "fa_glock17");
-					getPlayerPoints(param1);
 				}
 			}
 			
@@ -421,7 +399,6 @@ public int gunStoreHandler(Menu gunMenu, MenuAction action, int param1, int para
 				{
 					subtractPointsFromPlayer(param1, 200);
 					GivePlayerItem(param1, "fa_m92fs");
-					getPlayerPoints(param1);
 				}
 			}
 			
@@ -435,7 +412,6 @@ public int gunStoreHandler(Menu gunMenu, MenuAction action, int param1, int para
 				{
 					subtractPointsFromPlayer(param1, 500);
 					GivePlayerItem(param1, "fa_m92fs");
-					getPlayerPoints(param1);
 				}
 			}
 			
@@ -449,7 +425,6 @@ public int gunStoreHandler(Menu gunMenu, MenuAction action, int param1, int para
 				{
 					subtractPointsFromPlayer(param1, 500);
 					GivePlayerItem(param1, "fa_sako85");
-					getPlayerPoints(param1);
 				}
 			}
 			
@@ -463,7 +438,6 @@ public int gunStoreHandler(Menu gunMenu, MenuAction action, int param1, int para
 				{
 					subtractPointsFromPlayer(param1, 1750);
 					GivePlayerItem(param1, "fa_sako85");
-					getPlayerPoints(param1);
 				}
 			}
 			
@@ -477,7 +451,6 @@ public int gunStoreHandler(Menu gunMenu, MenuAction action, int param1, int para
 				{
 					subtractPointsFromPlayer(param1, 1200);
 					GivePlayerItem(param1, "fa_sv10");
-					getPlayerPoints(param1);
 				}
 				
 			}
@@ -492,7 +465,6 @@ public int gunStoreHandler(Menu gunMenu, MenuAction action, int param1, int para
 				{
 					subtractPointsFromPlayer(param1, 1500);
 					GivePlayerItem(param1, "fa_winchester1892");
-					getPlayerPoints(param1);
 				}
 			}
 			
@@ -506,7 +478,6 @@ public int gunStoreHandler(Menu gunMenu, MenuAction action, int param1, int para
 				{
 					subtractPointsFromPlayer(param1, 1200);
 					GivePlayerItem(param1, "fa_mac10");
-					getPlayerPoints(param1);
 				}
 			}
 			
@@ -520,7 +491,6 @@ public int gunStoreHandler(Menu gunMenu, MenuAction action, int param1, int para
 				{
 					subtractPointsFromPlayer(param1, 2000);
 					GivePlayerItem(param1, "fa_fnfal");
-					getPlayerPoints(param1);
 				}
 				
 			}
@@ -538,7 +508,6 @@ public int gunStoreHandler(Menu gunMenu, MenuAction action, int param1, int para
 					EmitSound(clientArr, 1, "*/Mystery_Box_Sound.mp3", param1);
 					subtractPointsFromPlayer(param1, 950);
 					CreateTimer(4.7, giveMysteryWeapon, param1);
-					getPlayerPoints(param1);
 				}
 				
 			}
