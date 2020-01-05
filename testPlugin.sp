@@ -31,12 +31,14 @@ public Plugin myinfo =
 public void OnPluginStart()
 {
 	//To simulate the Ray Gun
-	ServerCommand("sv_flare_gun_explode_damage 250");
-
+	ServerCommand("sv_cheats 1");
+	ServerCommand("sv_flare_gun_explode_damage 750");
+	ServerCommand("sv_cheats 0");
+	
 	RegConsoleCmd("gunStore", displayGunStore);
 	RegConsoleCmd("ammoStore", displayAmmoStore);
 	
-	RegConsoleCmd("setPoints", setClientPoints);
+	RegConsoleCmd("setPoints", setClientPoints, "");
 	
 	
 	ServerCommand("bind \"o\" \"say /gunStore\"");
@@ -90,19 +92,30 @@ public void subtractPointsFromPlayer(int client, int subPoints)
 	playerScores[x] = newScore;
 }
 
-//Method to set all player points to 0
+//Method to set all player points to 500
 public void resetAllPoints()
 {
 	for (int i = 0; i < MAXPLAYERS+1; i++)
 	{
-		playerScores[i] = 0;
+		playerScores[i] = 500;
 	}	
 }
 
 //Method executed when the command /setPoints is called, set's players points to 1000
 public Action setClientPoints(int client, int args)
 {
-	setPlayerPoints(client);
+	//Get client
+	int player = GetClientUserId(client);
+	
+	//buff for args
+	char argPoints[15];
+	GetCmdArg(1, argPoints, 8);
+	
+	//Convert to int
+	int newArgPoints = StringToInt(argPoints);
+	
+	//Setting player score to desired points
+	playerScores[player] = newArgPoints;
 }
 
 //Action - Gives points to player when the zombie takes damage
@@ -135,6 +148,11 @@ public void Event_roundBegin(Event event, const char[] name, bool dontBroadcast)
 {
 	syncedTimer = CreateHudSynchronizer();
 	CreateTimer(1.0, pointsHUD, _, TIMER_REPEAT);
+	
+	//Maybe this should fix the binding to everyone(?)
+	ServerCommand("bind \"o\" \"say /gunStore\"");
+	ServerCommand("bind \"p\" \"say /ammoStore\"");
+	
 }
 
 public Action pointsHUD(Handle timer)
@@ -173,44 +191,44 @@ public Action pointsHUD(Handle timer)
 				//White
 				case 1:
 				{
-					SetHudTextParams(0.010, 0.35, 0.5, 210, 210, 211, 255, 0, 6.0, 0.1, 0.2);
+					SetHudTextParams(0.010, 0.45, 0.5, 210, 210, 211, 255, 0, 6.0, 0.1, 0.2);
 					ShowSyncHudText(i, syncedTimer, dataForHud);
 				}
 				//Blue
 				case 2:
 				{
-					SetHudTextParams(0.010, 0.35, 0.5, 120, 204, 234, 255, 0, 6.0, 0.1, 0.2);
+					SetHudTextParams(0.010, 0.45, 0.5, 120, 204, 234, 255, 0, 6.0, 0.1, 0.2);
 					ShowSyncHudText(i, syncedTimer, dataForHud);
 				}
 				//Yellow
 				case 3:
 				{
-					SetHudTextParams(0.010, 0.35, 0.5, 225, 180, 62, 255, 0, 6.0, 0.1, 0.2);
+					SetHudTextParams(0.010, 0.45, 0.5, 225, 180, 62, 255, 0, 6.0, 0.1, 0.2);
 					ShowSyncHudText(i, syncedTimer, dataForHud);
 				}
 				//Green
 				case 4:
 				{
-					SetHudTextParams(0.010, 0.35, 0.5, 121, 225, 127, 255, 0, 6.0, 0.1, 0.2);
+					SetHudTextParams(0.010, 0.45, 0.5, 121, 225, 127, 255, 0, 6.0, 0.1, 0.2);
 					ShowSyncHudText(i, syncedTimer, dataForHud);
 				}
 				//White
 				case 5:
 				{
-					SetHudTextParams(0.010, 0.35, 0.5, 210, 210, 211, 255, 0, 6.0, 0.1, 0.2);
+					SetHudTextParams(0.010, 0.45, 0.5, 210, 210, 211, 255, 0, 6.0, 0.1, 0.2);
 					ShowSyncHudText(i, syncedTimer, dataForHud);
 
 				}
 				//Blue
 				case 6:
 				{
-					SetHudTextParams(0.010, 0.35, 0.5, 120, 204, 234, 255, 0, 6.0, 0.1, 0.2);
+					SetHudTextParams(0.010, 0.45, 0.5, 120, 204, 234, 255, 0, 6.0, 0.1, 0.2);
 					ShowSyncHudText(i, syncedTimer, dataForHud);
 				}
 				//Yellow
 				case 7:
 				{
-					SetHudTextParams(0.010, 0.35, 0.5, 225, 180, 62, 255, 0, 6.0, 0.1, 0.2);
+					SetHudTextParams(0.010, 0.45, 0.5, 225, 180, 62, 255, 0, 6.0, 0.1, 0.2);
 					ShowSyncHudText(i, syncedTimer, dataForHud);
 				}
 				//Green
