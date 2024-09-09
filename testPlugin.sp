@@ -2,7 +2,7 @@
 
 #define DEBUG
 
-#define PLUGIN_AUTHOR "Joey and Eldrish"
+#define PLUGIN_AUTHOR "Elizabeth and Eldrish"
 #define PLUGIN_VERSION "1.0"
 #define PLUGIN_NAME "testPlugin"
 
