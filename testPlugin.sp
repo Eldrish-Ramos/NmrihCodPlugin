@@ -351,7 +351,7 @@ public int GetWeaponClipSize(int entity)
 public Action displayGunStore(int client, int args)
 {
 	Menu gunMenu = new Menu(gunStoreHandler);
-	gunMenu.SetTitle("Joey's Gun Store");
+	gunMenu.SetTitle("Elizabeths's Gun Store");
 	
 	//All Items available in the gun store
 	AddMenuItem(gunMenu, "COLT", "Colt 1911 (500)");
